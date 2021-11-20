@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小米倒计时</title>
+    <style>
+        .nav {
+            border-top: 1px solid orangered;
+            position: relative;
+            margin: 100px;
+            margin-left: 150px;
+            width: 243px;
+            height: 400px;
+            background-color: #f1eded;
+        }
+        
+        .nav h4 {
+            margin-top: 70px;
+            text-align: center;
+            color: orangered;
+            font-size: 20px;
+            font-weight: 400;
+        }
+        
+        .nav img {
+            margin-left: 70px;
+        }
+        
+        .nav p {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 200;
+            color: rgb(95, 93, 93);
+        }
+        
+        .times {
+            position: absolute;
+            left: 42px;
+            bottom: 30px;
+            width: 210px;
+            height: 60px;
+        }
+        
+        .times span {
+            float: left;
+            display: block;
+            width: 40px;
+            height: 40px;
+            background-color: rgb(83, 74, 74);
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 5px;
+        }
+        
+        .times i {
+            width: 15px;
+            float: left;
+            height: 40px;
+            line-height: 40px;
+            color: #605751;
+            font-size: 28px;
+            font-style: normal;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav">
+        <h4>20:00场</h4>
+        <img src="img/1.png" alt="">
+        <p>距离结束还有</p>
+        <div class="times">
+            <span class="hour">1</span>
+            <i>:</i>
+            <span class="minute">2</span>
+            <i>:</i>
+            <span class="second">3</span>
+        </div>
+    </div>
+
+    <script>
+        var hour = document.querySelector('.hour');
+        var minute = document.querySelector('.minute');
+        var second = document.querySelector('.second');
+        var inputTime = +new Date('2021-3-31 00:00:00'); // 用户设定时间
+        setInterval(countDown, 1000); // 每隔一秒调用 倒计时函数刷新结果
+
+        function countDown() {
+            var nowTime = +new Date(); // 现在时间
+            var times = (inputTime - nowTime) / 1000; // 相差的秒数
+            var h = parseInt(times / 60 / 60 % 24); // 小时
+            h = h < 10 ? '0' + h : h;
+            hour.innerHTML = h;
+            var m = parseInt(times / 60 % 60); // 分钟
+            m = m < 10 ? '0' + m : m;
+            minute.innerHTML = m;
+            var s = parseInt(times % 60); //秒
+            s = s < 10 ? '0' + s : s;
+            second.innerHTML = s;
+
+        }
+    </script>
+
+
+
+
+</body>
+
+</html>
