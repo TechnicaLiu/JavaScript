@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+  <script>
+    // 1. 获取数据  
+    const endpoint =
+      'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+    const cities = []
+    fetch(endpoint)
+      .then(response => response.json())
+      .then(data => cities.push(...data));
+
+    // 2. 匹配结果 
+    function findMatch(inputWords, cities) {
+      return cities.filter(place => {
+        const regex = new RegExp(inputWords, 'gi');
+        if (place.city.match(regex) || place.state.match(regex)) {
+          return true
+        }
+      })
+    }
+
+    // 展示数据 
+
+    function displayResult() {
+
+      const matchArray = findMatch(this.value, cities);
+      const html = matchArray.map(place => {
+        // 高亮操作  
+        const regex = new RegExp(this.value, 'gi');
+        const cityName = place.city.replace(regex, `<span class='hl'>${this.value}</span>`)
+        const stateName = place.state.replace(regex, `<span class='hl'>${this.value}</span>`)
+
+        const population = splitNum(place.population);
+        return `  
+        <li>
+          <span class='name'>${cityName} , ${stateName}</span>
+          <span class='population'>${population}</span>
+        </li> 
+        `
+      }).join('');
+      ul.innerHTML = html;
+
+    }
+
+    // 千分位 
+    // function splitNum(number) {
+    //   var result = [];
+    //   var count = 0;
+    //   number = number.toString().split('');
+    //   for (let i = number.length - 1; i >= 0; i--) {
+    //     count++;
+    //     result.unshift(number[i]);
+    //     if (!(count % 3) && i !== 0) {
+    //       result.unshift(',')
+    //     }
+    //   }
+    //   return result.join('');
+    // }
+    function splitNum(number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+
+
+
+    const input = document.querySelector('.search');
+    const ul = document.querySelector('.suggestions');
+    input.addEventListener('change', displayResult)
+    input.addEventListener('keyup', displayResult)
+  </script>
+</body>
+
+</html>
