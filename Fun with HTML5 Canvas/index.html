@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+
+<body>
+  <canvas id="draw" width="800" height="800"></canvas>
+  <script>
+    const canvas = document.querySelector('#draw');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const ctx = canvas.getContext('2d'); // 通过context对象来 画画 
+    ctx.strokeStyle = '#BADA55'; // 设置图形轮廓的颜色  
+    ctx.lineJoin = 'round'; // 同一个 path 内，设定线条与线条间接合处的样式。
+    ctx.lineCap = 'round'; // 线条末端样式 
+    ctx.lineWidth = 10; // 线宽度
+
+
+
+    let idDrawing = false; // 控制 是否开始 画画函数
+    let lastX = 0; // 起始点
+    let lastY = 0; // 终止点
+    let hue = 0; // 控制颜色 渐变 
+    let direction = true; // direction 控制 线的宽度变化  
+
+
+    function draw(e) {
+      if (!idDrawing) return;
+      ctx.strokeStyle = `hsl(${hue},100%,50%)`;
+      ctx.beginPath(); // 新建一条路径  
+      ctx.moveTo(lastX, lastY); // 设置路径的起始点坐标 
+      ctx.lineTo(e.offsetX, e.offsetY);
+      ctx.stroke(); // 通过线条绘制图形轮廓 
+      [lastX, lastY] = [e.offsetX, e.offsetY]
+
+      hue++;
+      if (hue >= 359) {
+        hue = 0;
+      }
+      if (ctx.lineWidth >= 50 || ctx.lineWidth <= 1) {
+        direction = !direction;
+      }
+
+      if (direction) {
+        ctx.lineWidth++;
+      } else {
+        ctx.lineWidth--;
+      }
+
+      lastX = e.offsetX;
+      lastY = e.offsetY;
+
+
+    }
+
+
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mousedown', (e) => {
+      idDrawing = true;
+      [lastX, lastY] = [e.offsetX, e.offsetY]
+    });
+    canvas.addEventListener('mouseup', () => idDrawing = false);
+    canvas.addEventListener('mouseout', () => idDrawing = false);
+  </script>
+
+  <style>
+    html,
+    body {
+      margin: 0;
+    }
+  </style>
+
+</body>
+
+</html>
