@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Console Tricks!</title>
+</head>
+
+<body>
+
+  <p onClick="makeGreen()">×BREAK×DOWN×</p>
+
+  <script>
+    const dogs = [{
+      name: 'Snickers',
+      age: 2
+    }, {
+      name: 'hugo',
+      age: 8
+    }];
+
+    function makeGreen() {
+      const p = document.querySelector('p');
+      p.style.color = '#BADA55';
+      p.style.fontSize = '50px';
+    }
+
+    // Regular
+    console.log('最快速高效的排错方法');
+    // Interpolated
+    console.log('my name is %s', 'TechLiu'); // 第二个参数会 替换掉 %s的位置 
+    // Styled
+    console.log('%c ZLW I love you', 'font-size:30px; color:red'); // 用%c 来设置样式  
+    // warning!
+    console.warn('警告！对方太美,你配不上');
+    // Error :|
+    console.error('狗屁爱情！')
+    // Info
+    console.log('和普通的log一样')
+    // Testing
+    console.assert(1 == 2, '1 and 2 is no equal') // 当条件为 flase,输出指定语句 
+    // clearing
+    console.clear();
+    // Viewing DOM Elements
+    const p = document.querySelector('p');
+    console.log(p) // 输出p元素下的所有属性  
+    // Grouping together
+    dogs.forEach(dog => {
+      console.group(`${dog.name}`)
+      console.log(`this is ${dog.name}`);
+      console.log(`${dog.name} is ${dog.age} years old `);
+      console.groupEnd(`${dog.name}`);
+    })
+    // counting
+    console.count('hello');
+    console.count('hello');
+    console.count('hello');
+    console.count('hi');
+    console.count('hi');
+    // timing    掌握获取数据的时间 
+    console.time('fetch time:');
+    const endpoint =
+      'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+    fetch(endpoint)
+      .then(response => response.json())
+      .then(data => {
+        console.timeEnd('fetch time:');
+        console.log(data)
+      });
+
+
+    console.table(dogs)
+  </script>
+</body>
+
+</html>
